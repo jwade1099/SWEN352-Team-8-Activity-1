@@ -20,7 +20,7 @@ public class CoffeeMakerTest {
 	@BeforeEach
 	public void setUp() {
 		// add setup here
-//		CuT = new CoffeeMaker();
+		CuT = new CoffeeMaker();
 	}
 
 	@AfterEach
