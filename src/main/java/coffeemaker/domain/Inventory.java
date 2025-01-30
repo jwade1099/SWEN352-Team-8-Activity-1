@@ -138,7 +138,7 @@ public class Inventory {
     } catch (NumberFormatException e) {
       throw new InventoryException("Units of sugar must be a positive integer");
     }
-    if (amtSugar <= 0) {
+    if (amtSugar >= 0) { //JWADE EDIT GREATER THAN INSTEAD OF LESS THAN 1/30/2025
       this.sugar += amtSugar;
     } else {
       throw new InventoryException("Units of sugar must be a positive integer");
