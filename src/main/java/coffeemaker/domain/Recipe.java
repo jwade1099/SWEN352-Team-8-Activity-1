@@ -42,6 +42,9 @@ public class Recipe {
    */
   public void setName(String name) {
     if (name != null) {
+      if (name.trim().isEmpty()) {
+        throw new RecipeException("Name must have at least one non-blank character");
+      }
       this.name = name;
     }
   }
@@ -194,9 +197,11 @@ public class Recipe {
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+
+    if (!(obj instanceof Recipe)) {
       return false;
     }
+
     final Recipe other = (Recipe) obj;
     if (name == null) {
       if (other.name != null) {
