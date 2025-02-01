@@ -87,6 +87,12 @@ public class RecipeTest {
     }
 
     @Test
+    public void testChocolateDefault() {
+        Recipe r = new Recipe();
+        assertEquals(0, r.getAmtChocolate());
+    }
+
+    @Test
     public void testSetAmtChocolatePositive() {
         Recipe r = new Recipe();
         r.setAmtChocolate("5");
@@ -103,6 +109,12 @@ public class RecipeTest {
     public void testSetAmtChocolateInvalid() {
         Recipe r = new Recipe();
         assertThrows(RecipeException.class, () -> r.setAmtChocolate("not a number"));
+    }
+
+    @Test
+    public void testPriceDefault() {
+        Recipe r = new Recipe();
+        assertEquals(0, r.getPrice());
     }
 
     @Test
@@ -211,7 +223,54 @@ public class RecipeTest {
         Recipe normal = new Recipe();
         special.setName("Coffee");
         normal.setName("Coffee");
-        assertEquals(special.hashCode(), normal.hashCode());
         assertEquals(special, normal);
     }
+
+    /**
+     * Testing this method for the equivalence of the Recipe class when using the specialtyrecipe
+     * class to ensure that hashcodes are still generated and equal
+     */
+    @Test
+    public void testHashCodeSpecialtyEquivalence() {
+        Recipe r1 = new SpecialRecipe();
+        Recipe r2 = new Recipe();
+        r1.setName("Coffee");
+        r2.setName("Coffee");
+        assertEquals(r1.hashCode(), r2.hashCode());
+    }
+
+    @Test
+    public void testNameEquivalenceFalse() {
+        Recipe r1 = new Recipe();
+        Recipe r2 = new Recipe();
+        r1.setName("Coffee");
+        r2.setName("Tea");
+        assertNotEquals(r1, r2);
+    }
+
+    @Test
+    public void testGetName() {
+        Recipe r = new Recipe();
+        r.setName("Coffee");
+        assertEquals("Coffee", r.getName());
+    }
+
+    @Test
+    public void testNullNameDoesntChange() {
+        Recipe r = new Recipe();
+        r.setName("Coffee");
+        assertEquals("Coffee", r.getName());
+    }
+
+    @Test
+    public void testConstructor() {
+        Recipe recipe = new Recipe();
+        assertEquals("", recipe.getName());
+        assertEquals(0, recipe.getPrice());
+        assertEquals(0, recipe.getAmtCoffee());
+        assertEquals(0, recipe.getAmtMilk());
+        assertEquals(0, recipe.getAmtSugar());
+        assertEquals(0, recipe.getAmtChocolate());
+    }
 }
+
