@@ -214,7 +214,7 @@ public class Inventory {
    */
   public boolean useIngredients(Recipe r) {
     if (enoughIngredients(r)) {
-      this.coffee += r.getAmtCoffee();
+      this.coffee -= r.getAmtCoffee(); // Jwade fix
       this.milk -= r.getAmtMilk();
       this.sugar -= r.getAmtSugar();
       this.chocolate -= r.getAmtChocolate();
