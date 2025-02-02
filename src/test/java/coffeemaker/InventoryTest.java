@@ -1,6 +1,8 @@
 package coffeemaker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterEach;
@@ -10,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import coffeemaker.CoffeeMaker;
 import coffeemaker.domain.Inventory;
+import coffeemaker.domain.Recipe;
+import coffeemaker.exceptions.InventoryException;
 
 public class InventoryTest {
  
@@ -65,5 +69,92 @@ public class InventoryTest {
     void testToString() {
         assertEquals("Coffee: 15\nMilk: 15\nSugar: 15\nChocolate: 15\n", inventory.toString(), "toString should be correct"); 
     }
+
+
+    @Test
+    void testBadInput() {
+        assertThrows(InventoryException.class, () -> inventory.addCoffee("a"));
+        assertThrows(InventoryException.class, () -> inventory.addMilk("b"));
+        assertThrows(InventoryException.class, () -> inventory.addSugar("c"));
+        assertThrows(InventoryException.class, () -> inventory.addChocolate("d"));
+    }
+    
+    @Test
+    void testUseIngredient() {
+        inventory.setCoffee(5);
+        inventory.setMilk(7);
+        inventory.setSugar(9);
+        inventory.setChocolate(11);
+
+        Recipe recipe = new Recipe();
+
+        recipe.setAmtChocolate("4");
+        recipe.setAmtCoffee("3");
+        recipe.setAmtMilk("2");
+        recipe.setAmtSugar("1");
+
+        assertTrue(inventory.useIngredients(recipe), "Enough ingredients");
+    }
+
+    @Test
+    void testNotEnoughIngredienst() {
+        inventory.setCoffee(1);
+        inventory.setMilk(1);
+        inventory.setSugar(1);
+        inventory.setChocolate(11);
+
+        Recipe recipe = new Recipe();
+
+        recipe.setAmtChocolate("23");
+        recipe.setAmtCoffee("3");
+        recipe.setAmtMilk("2");
+        recipe.setAmtSugar("1");
+
+        assertFalse(inventory.useIngredients(recipe), "Not enough ingredients");
+    }
+
+
+    @Test
+    void testNegativeNumber() {
+        assertThrows(InventoryException.class, () -> inventory.addCoffee("-1"));
+        assertThrows(InventoryException.class, () -> inventory.addMilk("-1"));
+        assertThrows(InventoryException.class, () -> inventory.addSugar("-1"));
+        assertThrows(InventoryException.class, () -> inventory.addChocolate("-1"));
+    }
+
+
+    @Test
+    void testSugarProblem() {
+        inventory.setCoffee(5);
+        inventory.setMilk(7);
+        inventory.setSugar(1);
+        inventory.setChocolate(11);
+
+        Recipe recipe = new Recipe();
+
+        recipe.setAmtChocolate("4");
+        recipe.setAmtCoffee("3");
+        recipe.setAmtMilk("2");
+        recipe.setAmtSugar("5");
+
+        assertFalse(inventory.useIngredients(recipe), "Not Enough Sugar");
+        
+    }
+
+
+    @Test
+    void testBadSet() {
+        inventory.setCoffee(-1);
+        inventory.setSugar(-1);
+        inventory.setMilk(-1);
+        inventory.setChocolate(-1);
+        assertEquals(15, inventory.getCoffee(), "Coffee should be 15");
+        assertEquals(15, inventory.getMilk(), "Milk should be 15");
+        assertEquals(15, inventory.getSugar(), "Sugar should be 15");
+        assertEquals(15, inventory.getCoffee(), "coffee is 15");
+    }
+    
+    
+    
 	
 }
