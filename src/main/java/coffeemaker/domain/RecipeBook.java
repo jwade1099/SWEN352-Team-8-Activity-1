@@ -89,9 +89,10 @@ public class RecipeBook {
    * @return the name of the old recipe or {@code null} if the delete operation failed
    */
   public String deleteRecipe(int recipeToDelete) {
+    if(recipeToDelete < 0 || recipeToDelete >= NUM_RECIPES) return null;
     if (recipeArray[recipeToDelete] != null) {
       String recipeName = recipeArray[recipeToDelete].getName();
-      recipeArray[recipeToDelete] = new Recipe();
+      recipeArray[recipeToDelete] = null;
       return recipeName;
     } else {
       return null;
@@ -109,9 +110,9 @@ public class RecipeBook {
    * @return the name of the old recipe or {@code null} if the replace operation failed
    */
   public String replaceRecipe(int recipeToReplace, Recipe newRecipe) {
+    if(recipeToReplace < 0 || recipeToReplace >= NUM_RECIPES) return null;
     if (recipeArray[recipeToReplace] != null) {
       String recipeName = recipeArray[recipeToReplace].getName();
-      newRecipe.setName("");
       recipeArray[recipeToReplace] = newRecipe;
       return recipeName;
     } else {
